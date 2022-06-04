@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -15,7 +17,15 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            return route('login');
+            $user = User::find($request->route('id'));
+
+            if ($user->hasVerifiedEmail()) {
+                return redirect(env('MAIL_REDIRECT') . '/email/verify/already-success');
+            }
+            if ($user->markEmailAsVerified()) {
+                event(new Verified($user));
+            }
+            return env('MAIL_REDIRECT');
         }
     }
 }

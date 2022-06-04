@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Redirect;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,23 +19,23 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+// Auth::routes(['verify' => true]);
+Route::get('profile', function () {
+    // Only verified users may enter...
+})->middleware('verified');
 Route::post('login', action: [AuthController::class, 'login']);
-
 Route::post('register', action: [AuthController::class, 'register']);
+
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    return Redirect::to('www/google.com');
 })->middleware(['auth','signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
-
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
