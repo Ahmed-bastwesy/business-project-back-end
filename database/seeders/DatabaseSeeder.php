@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ProductMaterial;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,16 +23,23 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            RolesSeeder::class,
+            AdminSeeder::class,
             UserSeeder::class,
+
             CategorySeeder::class,
             BusinessSeeder::class,
 
             ProductSeeder::class,
             TagSeeder::class,
             ProductTagSeeder::class,
+            MaterialSeeder::class,
+            ProductMaterialSeeder::class,
 
             OrderSeeder::class,
             OrderProductSeeder::class,
+            PillSeeder::class
+
             
         ]);
     }

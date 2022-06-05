@@ -20,11 +20,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('address');
-            $table->enum('gender',['male','female']);
+            $table->enum('gender', ['male', 'female']);
             $table->string('profileImg')->nullable();
             $table->bigInteger('nationalId')->nullable();
             $table->bigInteger('phone')->nullable();
-            $table->enum('type',['business','client']);
+            $table->enum('type', ['admin', 'business_founder', 'client']);
             $table->dateTime('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();

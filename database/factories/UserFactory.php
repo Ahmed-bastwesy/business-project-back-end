@@ -20,7 +20,7 @@ class UserFactory extends Factory
     {
         $password = 123456789;
         $gender = $this->faker->randomElement(['male', 'female']);
-        $type = $this->faker->randomElement(['business', 'client']);
+        $type = $this->faker->randomElement(['business_founder', 'client']);
 
 
         return [

@@ -1,3 +1,5 @@
+-- composer update
+-- create databse with the name in .env
 -- php artisan migrate:fresh
 -- php artisan db:seed
 ------------------------------------------------------
@@ -7,9 +9,9 @@
 user - category - business 
 product - tag - product_tags
 order - order_products
+bills - material - product_materials
 ---------------------------------------------
 **Table under created
-bills - material - product_materials
 client_rating - business_rating
 client_report - business_report
 plans - offers - calender
