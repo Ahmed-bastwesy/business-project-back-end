@@ -1,0 +1,21 @@
+-- php artisan migrate:fresh
+-- php artisan db:seed
+------------------------------------------------------
+
+
+**Table created
+user - category - business 
+product - tag - product_tags
+order - order_products
+---------------------------------------------
+**Table under created
+bills - material - product_materials
+client_rating - business_rating
+client_report - business_report
+plans - offers - calender
+--------------------------------------------
+
+
+account for us
+email : MANKRA42TEAM@gmail.com 
+pass  : Mankra12345*
