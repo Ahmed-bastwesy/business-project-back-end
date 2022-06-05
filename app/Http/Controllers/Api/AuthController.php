@@ -43,7 +43,6 @@ class AuthController extends Controller
             'token'=>$token,
         ];
 
-
         event(new Registered($user));
         return response($response,201);
     }
