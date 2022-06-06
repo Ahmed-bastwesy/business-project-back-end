@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -19,10 +20,12 @@ use Illuminate\Support\Facades\Auth;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 // Auth::routes(['verify' => true]);
 Route::get('profile', function () {
     // Only verified users may enter...
 })->middleware('verified');
+
 Route::post('login', action: [AuthController::class, 'login']);
 Route::post('register', action: [AuthController::class, 'register']);
 
@@ -32,16 +35,14 @@ Route::get('/email/verify', function () {
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-})->middleware(['auth','signed'])->name('verification.verify');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', action: [AuthController::class, 'logout']);
 });
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
