@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBusinessRequest;
 use App\Http\Requests\UpdateBusinessRequest;
+
+use App\Http\Resources\BusinessResource;
 use App\Models\Business;
 
 class BusinessController extends Controller
@@ -15,7 +17,7 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        //
+        return BusinessResource::collection(Business::paginate(2));
     }
 
     /**
@@ -36,7 +38,8 @@ class BusinessController extends Controller
      */
     public function store(StoreBusinessRequest $request)
     {
-        //
+        $business = Business::create($request->all());
+        return new BusinessResource($business);
     }
 
     /**
@@ -47,7 +50,7 @@ class BusinessController extends Controller
      */
     public function show(Business $business)
     {
-        //
+        return new BusinessResource($business);
     }
 
     /**
@@ -64,13 +67,14 @@ class BusinessController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBusinessRequest  $request
+     * @param  \App\Http\Requests\StoreBusinessRequest  $request
      * @param  \App\Models\Business  $business
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBusinessRequest $request, Business $business)
+    public function update(StoreBusinessRequest $request, Business $business)
     {
-        //
+        $business->update($request->all());
+        return new BusinessResource($business);
     }
 
     /**
@@ -81,6 +85,7 @@ class BusinessController extends Controller
      */
     public function destroy(Business $business)
     {
-        //
+        $business->delete();
+        return response('delete', 204);
     }
 }
