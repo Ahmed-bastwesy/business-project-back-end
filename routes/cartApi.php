@@ -14,11 +14,18 @@ use Illuminate\Support\Facades\Auth;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "CARTAPI" middleware group. Enjoy building your CARTAPI!
 |
-*/
+// */
+// Route::post("/{id}/{id}",function(){
+//     return response()->json('hhhhhhhhh');
+// });
 
-Route::group(["middleware"=>'cors'],function (){
+Route::group(["middleware"=>['api']],function (){
 
-    Route::post('/{id}/{id}',function(){
-            dd('ddddddddddd');
+    Route::post("/{userId}/{productId}",function(){
+            
+
+
+
+        
     });
 });
