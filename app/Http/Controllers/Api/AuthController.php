@@ -27,15 +27,19 @@ class AuthController extends Controller
             'phone' => 'required|unique:users|digits_between:11,11',
             'type' => 'required|in:business_founder,client',
         ]);
+        $file = $request->file('profileImg');
+        $extension = $file -> getClientOriginalExtension();
+        $filename = time() . '.'.$extension;
+        $file->move('uploads/user/',$filename);
 
-        $img = $request->file('profileImg')->store('images/client');
-        $file_name = $request->file('profileImg')->getClientOriginalName();
+        // $img = $request->file('profileImg')->store('images/client');
+        // $file_name = $request->file('profileImg')->getClientOriginalName();
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'profileImg' => $file_name,
+            'profileImg' => 'uploads/user/'.$filename,
             'gender' => $data['gender'],
             'nationalId' => $data['nationalId'],
             'address' => $data['address'],
