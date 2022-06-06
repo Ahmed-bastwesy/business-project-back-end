@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 require base_path('routes/api.php');
                 require base_path('routes/userAPI.php');
                 require base_path('routes/businessAPI.php');
+                require base_path('routes/CartApi.php');
             });
 
             Route::middleware('web')
@@ -53,4 +54,7 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
     }
+    
+    
+  
 }
