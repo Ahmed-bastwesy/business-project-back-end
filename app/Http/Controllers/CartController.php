@@ -6,10 +6,12 @@ use App\Models\Product;
 use App\Models\Cart;
 
 use Illuminate\Http\Request;
+use App\Traits\CartTrait;
 
 class CartController extends Controller
 {
 
+    use CartTrait;
     public function index($userId){
 
         try{
@@ -18,20 +20,10 @@ class CartController extends Controller
             return response()->json(['message' => 'invalid data'], 404);
 
            }else{
-            $userProducts =  
-                Cart::where('user_id',$userId)
-                ->with('product')
-                ->get()->makeHidden(['created_at', 'updated_at', 'id', 'user_id', 'product_id']);
-                $userProducts = $userProducts->map(function($item){
-                   $data= $item->product->makeHidden(['created_at', 'updated_at', 'id']);
-                    $data['quantity'] = $item->quantity;
-                    return $data;
-
-                });
-            $data=[ "user_id"=>$userId,'userProducts' => $userProducts];
+            $data=$this->getUserCartProducts($userId);
             return response()->json($data, 200);
         }
-        }catch(\Exception $e){
+        }catch(Exception $e){
             return response()->json(['message' => $e->getMessage()], 500);
         }
 
@@ -41,37 +33,8 @@ class CartController extends Controller
     public function addToCart( $userId, $productId){
 
         try{
-            if(User::find($userId) == null || Product::find($productId) == null){
-                return response()->json(['message' => 'invalid data'], 404);
-            }else{
-            if(Cart::where('user_id',$userId)->get()->isEmpty()){
-                $cart = new Cart();
-                    $cart->user_id = $userId;
-                    $cart->product_id = $productId;
-                    $cart->quantity = 1;
-                    $cart->save();
-                return response()->json(['message' => 'added successfully'], 200);
-
-            }else{
-                $cart = Cart::where('user_id',$userId)->where('product_id',$productId)->first();
-                if($cart == null){
-                    $cart = new Cart();
-                    $cart->user_id = $userId;
-                    $cart->product_id = $productId;
-                    $cart->quantity = 1;
-                    $cart->save();
-                    return response()->json(['message' => 'added successfully'], 200);
-                }else{
-                    $cart->quantity = $cart->quantity + 1;
-                    $cart->save();
-                    return response()->json(['message' => 'added successfully'], 200);
-                }
-        
-                $data=[ "user_id"=>$userId,'product_id' => $productId];
-                return response()->json(['message' => 'added successfully'], 200);
-            }
-        }
-        
+          $data= $this-> addProductToCart($userId, $productId);
+          return response()->json(['message' => $data['message']], $data['status']);
         }catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -83,24 +46,10 @@ class CartController extends Controller
     public function removeFromCart($userId, $productId){
         try{
             
-            if(Cart::where('user_id',$userId)->get()->isEmpty()){
-                return response()->json(['message' => 'invalid data'], 404);
-
-            }else{
-                $cart= Cart::where('user_id',$userId)->where('product_id',$productId)->first();
-                if($cart ==null){
-                    return response()->json(['message' => 'invalid data'], 404);
-                }elseif($cart->quantity>1){
-                    $cart->quantity = $cart->quantity - 1;
-                    $cart->save();
-                    return response()->json(['message' => 'removed successfully'], 200);
-                }
-                else{
-                    $cart->delete();
-                }
-                $data=[ "user_id"=>$userId,'product_id' => $productId];
-                return response()->json(['message' => 'removed successfully'], 200);
-            }
+           $data=$this-> removeProductfromCart($userId, $productId);
+        
+            return response()->json(['message' => $data['message']], $data['status']);
+            
         }catch(\Exception $e){
             return response()->json(['message' => $e->getMessage(),], 500);
         }
