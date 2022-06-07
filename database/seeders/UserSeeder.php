@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $client_role = new Role;
         $client_role = $client_role->updateOrCreate(['name' => 'client']);
 
-        $users = User::factory(10)->create();
+        $users = User::factory(20)->create();
 
         foreach ($users as $user) :
             if ($user->type == 'business_founder') :
