@@ -18,7 +18,7 @@ use App\Http\Controllers\CartController;
 // */
 
 
-Route::group(["middleware"=>['api']],function (){
+Route::group(["middleware"=>['api','auth:sanctum']],function (){
 
     Route::get("/{userId}",[CartController::class,'index']);
     Route::post("/{userId}/{productId}",[CartController::class,'addToCart']);
