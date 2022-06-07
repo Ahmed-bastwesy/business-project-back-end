@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\Product;
+use App\Models\Cart;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -56,8 +56,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function products()
+    public function cart()
     {
-        return $this->belongsToMany(Product::class,"carts",'user_id','product_id');
+        return $this->hasOne(Cart::class);
     }
 }
