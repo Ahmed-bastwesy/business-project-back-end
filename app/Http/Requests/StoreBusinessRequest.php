@@ -13,7 +13,7 @@ class StoreBusinessRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class StoreBusinessRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|min:4',
+            'description' => 'required|string|min:20',
+            'facebook' => '',
+            'instagram' => '',
+            'category_id' => 'required|exists:\App\Models\Category,id',
+            'user_id' => 'required|exists:\App\Models\User,id'
         ];
     }
 }

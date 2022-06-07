@@ -9,6 +9,8 @@ class Business extends Model
 {
     use HasFactory;
 
+    protected $table = 'businesses';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +23,7 @@ class Business extends Model
         'description',
         'facebook',
         'instagram',
-        'category'
+        'category_id',
+        'user_id'
     ];
 }
